@@ -1,0 +1,12 @@
+#%RAML 1.0 Library
+usage: includes all datas
+types:
+  product: !include type/product.raml 
+  user: !include type/user.raml
+  order: !include type/order.raml
+traits:
+  404response: !include traits/404.raml
+securitySchemes:
+  security: !include security.raml
+resourceTypes:
+  postres: !include Resource/postRes.raml

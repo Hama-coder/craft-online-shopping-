@@ -4,90 +4,82 @@ description: Rest Api documentation
 version: 1.0 
 mediaType:
   - application/json
+uses:
+  lib: library.raml 
 /products:
   get:
-      queryParameters:
-        name:
-          type: string
-          description: the name of the product
-          maxLength: 20
-          example: Dell
-        productid:
-          type: integer
-          description: the od of the product
-          required: false
-          example: 123
-      headers:
-        connection-type:
-          description: multiple connection is allowed
-          type: array
-          required: false
-        conn-track:
-            description: connection session id mandatory
-            type: integer
-            required: true
-            example: 8456783464378
+    queryParameters: 
+      name: 
+       type: string 
+       description: the name of the product 
+       maxLength: 20 
+       example: Dell
+      productid: 
+        type: integer 
+        description: the od of the product 
+        required: false 
+        example: 123 
+      headers: 
+      connection-type: 
+          description: multiple connection is allowed 
+          type: array 
+          required: false 
+      conn-track: 
+            description: connection session id mandatory 
+            type: integer 
+            required: true 
+            example: 8456783464378 
     responses:
         200:
           body: 
             application/json:
-              example:   
-              [ 
-                { 
-                 "productid": 12, 
-                 "categoryid": 15, 
-                 "name": "DELL PC", 
-                 "description": "CORE I 5", 
-                 "video_url": "WWW.DELL.COM", 
-                 "price": 3000,  
-                }
-              ]
+             type: lib.product[]
+             example: !include examples/products.raml
+  is:
+    - lib.404response
   /{product}:
-   get: 
-    body:
-      application/json:
-        example:
-          { 
-            "categoryid": 10, 
-            "description": "dell laptop", 
-            "name": "dell laptop", 
-            "price": $1000,
-            "productid": 101, 
-            "video_url": "http://tests.com/dell-laptop" 
-          }
+   get:
+    responses:
+      200: 
+        body:
+          application/json:
+            type: lib.product
+            example: !include examples/product.raml
+    is:
+      - lib.404response
 /orders:
   get:
-  post:
-    body:
-      application/json:
-        example:
-         {
-            “Orderid" : 123, 
-            “userid”: 123, 
-            “addressid”: 201, 
-            “discountid” : 3, 
-            “created” : “2019-05-12", 
-            “modified”: “2019-05-12", 
-            “status” : “shipped”,
-          }
+    responses:
+      201:
+        body:
+          application/json:
+            type: lib.order
+            example: !include examples/orders.raml
+  type:
+    lib.postres:
+      examplereference1:
+        {
+          "orderid": 34567
+        }
   /{orderId}:
 /users:
   get:      
-  post:
+  type:
+    lib.postres:
+      examplereference1: 
+        {
+          "userid": 1234
+        }
   /{user}:
     get:
-      body:
-        application/json:
-          example:
-            [
-	           {
-	            "fname": "john",
-            	"lname": "peter",	
-            	"email": "john@gmail.com",
-	            "address": "Spain",
-	            "userId": 125
-}
-]
+      responses:
+        200:
+          body:
+           application/json:
+            type: lib.user[]
+            example: !include examples/user.raml
+    is:
+      - lib.404response
 /catagory:
   get:
   /{catId}:

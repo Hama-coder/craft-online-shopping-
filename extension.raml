@@ -1,0 +1,12 @@
+#%RAML 1.0 Extension
+extends: craft-onlineshopping.raml
+usage: This extention defines additional resources for administrators
+/user:
+  description: get list of user for admin user
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include examples/user.raml
+              
